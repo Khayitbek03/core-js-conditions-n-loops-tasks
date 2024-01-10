@@ -325,8 +325,44 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const arrayResult = [];
+  for (let i = 0; i < size; i += 1) {
+    arrayResult[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      arrayResult[i][j] = 0;
+    }
+  }
+
+  let startRow = 0;
+  let endRow = size - 1;
+  let startColumn = 0;
+  let endColumn = size - 1;
+
+  let step = 1;
+  while (startColumn <= endColumn && startRow <= endRow) {
+    for (let i = startColumn; i <= endColumn; i += 1) {
+      arrayResult[startRow][i] = step;
+      step += 1;
+    }
+    startRow += 1;
+    for (let i = startRow; i <= endRow; i += 1) {
+      arrayResult[i][endRow] = step;
+      step += 1;
+    }
+    endColumn -= 1;
+    for (let i = endColumn; i >= startColumn; i -= 1) {
+      arrayResult[endRow][i] = step;
+      step += 1;
+    }
+    endRow -= 1;
+    for (let i = endRow; i >= startRow; i -= 1) {
+      arrayResult[i][startColumn] = step;
+      step += 1;
+    }
+    startColumn += 1;
+  }
+  return arrayResult;
 }
 
 /**
@@ -344,8 +380,22 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const result = matrix;
+  const arrayResult = [];
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    arrayResult[i] = [];
+    for (let j = 0; j < matrix.length; j += 1) {
+      arrayResult[i][j] = matrix[i][j];
+    }
+  }
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = 0; j < matrix.length; j += 1) {
+      result[i][j] = arrayResult[matrix.length - j - 1][i];
+    }
+  }
+  return result;
 }
 
 /**
@@ -362,8 +412,28 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const startArr = arr;
+  if (arr.length <= 1) return arr;
+
+  const pivot = arr[0];
+  let leftArr = [];
+  let rightArr = [];
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < pivot) {
+      leftArr[leftArr.length] = arr[i];
+    } else {
+      rightArr[rightArr.length] = arr[i];
+    }
+  }
+
+  leftArr = sortByAsc(leftArr);
+  rightArr = sortByAsc(rightArr);
+  const result = [...leftArr, pivot, ...rightArr];
+  for (let i = 0; i < result.length; i += 1) {
+    startArr[i] = result[i];
+  }
+  return startArr;
 }
 
 /**
@@ -383,8 +453,19 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let result = str;
+  for (let i = 1; i <= iterations; i += 1) {
+    let firstStr = '';
+    let secondStr = '';
+    for (let j = 0; j < str.length; j += 1) {
+      if (j % 2 === 0) firstStr += result[j];
+      if (j % 2 === 1) secondStr += result[j];
+    }
+    result = firstStr + secondStr;
+    if (result === str) return shuffleChar(str, iterations % i);
+  }
+  return result;
 }
 
 /**
